@@ -1,0 +1,19 @@
+{
+  "include": ["skills", "plugins"],
+  "exclude": [
+    ".venv",
+    "node",
+    "cron",
+    "memories",
+    "**/__pycache__"
+  ],
+  "extraPaths": ["../../hermes-agent"],
+  "venvPath": "../../hermes-agent",
+  "venv": "venv",
+  "pythonVersion": "3.11",
+  "typeCheckingMode": "standard",
+  "reportMissingTypeStubs": false,
+  "enableTypeIgnoreComments": false,
+  "reportIgnoreCommentWithoutRule": "error",
+  "reportUnnecessaryTypeIgnoreComment": "warning"
+}

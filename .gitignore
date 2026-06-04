@@ -1,0 +1,82 @@
+# Template for Hermes profile distribution repositories.
+
+# Secrets / auth
+.env
+.env.*
+!.env.EXAMPLE
+!.env.template
+auth.json
+auth.lock
+
+# Runtime state / user data
+memories/
+sessions/
+logs/
+plans/
+workspace/
+home/
+local/
+cache/
+*_cache/
+image_cache/
+audio_cache/
+document_cache/
+browser_screenshots/
+checkpoints/
+sandboxes/
+backups/
+shared/
+
+
+# Databases / process state
+state.db*
+hermes_state.db*
+response_store.db*
+gateway.pid
+gateway.lock
+gateway_state.json
+gateway/
+discord_threads.json
+processes.json
+active_profile
+.update_check
+.hermes_history
+.install_method
+channel_directory.json
+errors.log
+state-snapshots/
+kanban.db*
+kanban/
+
+# Cron runtime locks
+cron/.tick.lock
+
+# Skill runtime metadata / hub cache
+skills/.bundled_manifest
+skills/.curator_state
+skills/.hub/
+skills/.usage.json*
+
+# Nested runtime dirs
+bin/
+.worktrees/
+
+# Python / OS
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+.venv
+
+# cache / snapshots
+.restart_last_processed.json
+context_length_cache.yaml
+.skills_prompt_snapshot.json
+models_dev_cache.json
+ollama_cloud_models_cache.json
+provider_models_cache.json
+
+
+# obsidian
+obsidian-vault/.obsidian/
+honcho.json
