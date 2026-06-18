@@ -1,6 +1,6 @@
 ---
 name: baoyu-infographic
-description: "Infographics: 21 layouts x 21 styles (信息图, 可视化)."
+description: "Baoyu visual content: infographics, article illustrations, knowledge comics. All use image_generate with saved prompts."
 version: 1.56.1
 author: 宝玉 (JimLiu)
 license: MIT
@@ -11,11 +11,25 @@ metadata:
     homepage: https://github.com/JimLiu/baoyu-skills#baoyu-infographic
 ---
 
-# Infographic Generator
+# Baoyu Visual Content Generator
 
-Adapted from [baoyu-infographic](https://github.com/JimLiu/baoyu-skills) for Hermes Agent's tool ecosystem.
+Three visual content types from 宝玉 (JimLiu), all sharing the same workflow pattern: content → analyze → confirm → prompts → `image_generate`. Choose the right type for the content:
 
-Two dimensions: **layout** (information structure) × **style** (visual aesthetics). Freely combine any layout with any style.
+| Type | Skill Section | Best For | Dimension Model |
+|------|---------------|----------|-----------------|
+| **Infographic** | § Infographics | Data, metrics, overviews | Layout × Style (21×21) |
+| **Article Illustration** | § Article Illustrations | Inline article images | Type × Style × Palette |
+| **Knowledge Comic** | § Knowledge Comics | Educational narratives, bios | Art × Tone + Presets |
+
+All three types share:
+- **Prompt file requirement** — every image must have a saved prompt file under `prompts/` before generation
+- **Secret stripping** — scan source content for API keys/tokens before writing anything
+- **Download step** — `image_generate` returns a URL; always `curl` it to a local PNG
+- **Absolute paths** — use fully-qualified paths for `curl -o` to avoid CWD drift
+
+---
+
+## § Infographics
 
 ## When to Use
 
@@ -235,3 +249,121 @@ Report: topic, layout, style, aspect, language, output path, files created.
 3. **One message per section** — each infographic section should convey one clear concept. Overloading sections reduces readability.
 4. **Style consistency** — the style definition from the references file must be applied consistently across the entire infographic. Don't mix styles.
 5. **image_generate aspect ratios** — the tool only supports `landscape`, `portrait`, and `square`. Custom ratios like `3:4` should map to the nearest option (portrait in that case).
+
+---
+
+## § Article Illustrations
+
+Generate inline illustrations for articles using **Type × Style × Palette** consistency.
+
+**When to use:** User asks to illustrate an article, add images, or says "为文章配图".
+
+### Dimensions
+
+| Dimension | Controls | Options |
+|-----------|----------|---------|
+| **Type** | Information structure | infographic, scene, flowchart, comparison, framework, timeline |
+| **Style** | Rendering approach | notion, warm, minimal, blueprint, watercolor, elegant (see `references/article-illustrator/styles.md`) |
+| **Palette** | Color scheme (optional) | macaron, warm, neon — overrides style's default |
+
+Or use **presets** (type + style + palette in one shot): see `references/article-illustrator/style-presets.md`.
+
+### Workflow
+
+```
+Detect refs → Analyze → Confirm (clarify) → Outline → Prompts → Generate → Insert
+```
+
+1. **Detect reference images** — if user supplies refs, use `vision_analyze` to extract style traits as text descriptions (image_generate is prompt-only)
+2. **Analyze** content type, purpose, core arguments, illustration positions → `analysis.md`
+3. **Confirm** settings via `clarify` (preset/type, density, style, palette, language)
+4. **Generate outline** → `outline.md` with position, purpose, visual content per illustration
+5. **Generate prompts** → `prompts/NN-{type}-{slug}.md` (BLOCKING: must exist before image generation)
+6. **Generate images** → `image_generate` + `curl` download to local PNG
+7. **Insert** `![description](relative-path)` after corresponding paragraph
+
+### Output Structure
+
+```
+{output-dir}/
+├── source-{slug}.{ext}
+├── analysis.md
+├── outline.md
+├── prompts/NN-{type}-{slug}.md
+└── NN-{type}-{slug}.png
+```
+
+**Default output**: Article file path → `{article-dir}/imgs/`. Pasted content → `illustrations/{topic-slug}/`.
+
+### Key Rules
+
+- **Visualize concepts, not metaphors** — if the article says "电锯切西瓜", illustrate the underlying concept
+- **Labels use article data** — actual numbers and terms, not generic placeholders
+- **Prompt files are mandatory** — no image generation without a saved prompt file
+
+Full details: `references/article-illustrator/workflow.md`, `references/article-illustrator/prompt-construction.md`
+
+---
+
+## § Knowledge Comics
+
+Create educational/biographical/tutorial comics with **Art × Tone** combinations.
+
+**When to use:** User asks for knowledge comic, educational comic, biography comic, or says "知识漫画".
+
+### Dimensions
+
+| Option | Values |
+|--------|--------|
+| **Art** | ligne-claire (default), manga, realistic, ink-brush, chalk, minimalist |
+| **Tone** | neutral (default), warm, dramatic, romantic, energetic, vintage, action |
+| **Layout** | standard, cinematic, dense, splash, mixed, webtoon, four-panel |
+| **Aspect** | 3:4 (default, portrait), 4:3 (landscape), 16:9 (widescreen) |
+
+### Presets
+
+| Preset | Equivalent | Hook |
+|--------|-----------|------|
+| `ohmsha` | manga + neutral | Visual metaphors, no talking heads |
+| `wuxia` | ink-brush + action | Qi effects, combat visuals |
+| `shoujo` | manga + romantic | Decorative elements, romantic beats |
+| `concept-story` | manga + warm | Visual symbol system, growth arc |
+| `four-panel` | minimalist + neutral + four-panel | 起承转合, B&W + spot color |
+
+Full definitions: `references/comic/art-styles/`, `references/comic/tones/`, `references/comic/presets/`
+
+### Workflow
+
+```
+Analyze → Confirm (style + reviews) → Storyboard + Characters → Prompts → Images → Complete
+```
+
+1. **Analyze** content → `analysis.md`, save source → `source-{slug}.md`
+2. **Confirm** art style, tone, focus, audience, review gates via `clarify`
+3. **Generate storyboard** → `storyboard.md` with panel breakdown + `characters/characters.md`
+4. **Generate prompts** → `prompts/NN-{cover|page}-[slug].md` (character descriptions embedded inline)
+5. **Generate character sheet** (optional, for multi-page) → `characters/characters.png`
+6. **Generate pages** → `image_generate` + `curl` download
+
+### Output Structure
+
+```
+comic/{topic-slug}/
+├── source-{slug}.md
+├── analysis.md
+├── storyboard.md
+├── characters/characters.md
+├── characters/characters.png
+├── prompts/NN-{cover|page}-[slug].md
+└── NN-{cover|page}-[slug].png
+```
+
+### Key Rules
+
+- **Character consistency** via text descriptions in `characters/characters.md`, embedded in every page prompt
+- **Character sheet PNG** is a review artifact, not input to image_generate (prompt-only tool)
+- **Step 2 confirmation required** — do not skip
+- **Timeout handling** — clarify timeout = default for THAT question only, not blanket defaults. Report defaults visibly.
+- **Use absolute paths for `curl -o`** — CWD drift between batches is a silent footgun
+
+Full details: `references/comic/workflow.md`, `references/comic/auto-selection.md`

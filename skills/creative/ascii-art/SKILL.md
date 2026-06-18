@@ -309,6 +309,72 @@ When tools above don't have what's needed, generate ASCII art directly using the
 - Max height: 15 lines for banners, 25 for scenes
 - Monospace only: output must render correctly in fixed-width fonts
 
+## ASCII Video Production Pipeline
+
+Convert video/audio/images into colored ASCII character video output (MP4, GIF, image sequence). Covers: video-to-ASCII conversion, audio-reactive music visualizers, generative ASCII art animations, hybrid video+audio reactive, text/lyrics overlays.
+
+### Modes
+
+| Mode | Input | Output |
+|------|-------|--------|
+| **Video-to-ASCII** | Video file | ASCII recreation of source footage |
+| **Audio-reactive** | Audio file | Generative visuals driven by audio features |
+| **Generative** | None | Procedural ASCII animation |
+| **Hybrid** | Video + audio | ASCII video with audio-reactive overlays |
+| **Lyrics/text** | Audio + text/SRT | Timed text with visual effects |
+
+### Stack
+
+Single self-contained Python script per project. No GPU required.
+
+| Layer | Tool | Purpose |
+|-------|------|---------|
+| Core | Python 3.10+, NumPy | Math, array ops |
+| Signal | SciPy | FFT, peak detection |
+| Imaging | Pillow | Font rasterization, frame decoding |
+| Video I/O | ffmpeg (CLI) | Decode input, encode output |
+| Parallel | concurrent.futures | N workers for batch rendering |
+
+### Pipeline
+
+```
+INPUT → ANALYZE → SCENE_FN → TONEMAP → SHADE → ENCODE
+```
+
+1. **INPUT** — Load/decode source material
+2. **ANALYZE** — Extract per-frame features (audio bands, video luminance, motion)
+3. **SCENE_FN** — Scene function renders to pixel canvas (`uint8 H,W,3`)
+4. **TONEMAP** — Percentile-based adaptive brightness normalization
+5. **SHADE** — Post-processing via `ShaderChain` + `FeedbackBuffer`
+6. **ENCODE** — Pipe raw RGB frames to ffmpeg for H.264/GIF encoding
+
+### Critical: Brightness
+
+ASCII on black is inherently dark. **Never use `canvas * N` multipliers** — they clip highlights. Use adaptive tonemap:
+
+```python
+def tonemap(canvas, gamma=0.75):
+    f = canvas.astype(np.float32)
+    lo, hi = np.percentile(f[::4, ::4], [1, 99.5])
+    if hi - lo < 10: hi = lo + 10
+    f = np.clip((f - lo) / (hi - lo), 0, 1) ** gamma
+    return (f * 255).astype(np.uint8)
+```
+
+### Detailed References
+
+For the complete ASCII video reference library, see:
+- `references/ascii-video/architecture.md` — Grid system, palettes, color system
+- `references/ascii-video/effects.md` — Effect building blocks, particles, transforms
+- `references/ascii-video/scenes.md` — Scene protocol, renderer, examples
+- `references/ascii-video/shaders.md` — Shader pipeline, transitions
+- `references/ascii-video/composition.md` — Blend modes, tonemap, feedback
+- `references/ascii-video/inputs.md` — Audio analysis, video sampling, TTS
+- `references/ascii-video/optimization.md` — Hardware detection, performance
+- `references/ascii-video/troubleshooting.md` — Common pitfalls and fixes
+
+---
+
 ## Decision Flow
 
 1. **Text as a banner** → pyfiglet if installed, otherwise asciified API via curl

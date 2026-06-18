@@ -572,6 +572,60 @@ Verified: file exists and opened cleanly in browser, no console errors.
 Next: pick the strongest direction and I’ll tighten copy + motion.
 ```
 
+## Quick Mockups (from sketch)
+
+Use this workflow when the user wants to **see a design direction before committing** — exploring a UI/UX idea as disposable HTML mockups. This is lighter-weight than the full design workflow above: generate 2-3 interactive variants so the user can compare visual directions side-by-side.
+
+**Trigger phrases:** "sketch this screen", "show me what X could look like", "compare layout A vs B", "give me 2-3 takes on this UI", "mockup this before I build"
+
+### Quick Mockup Workflow
+
+```
+intake → variants → head-to-head → pick winner (or iterate)
+```
+
+**1. Intake** (skip if user already gave enough) — get three things one at a time:
+- **Feel:** "What should this feel like? Adjectives, emotions, a vibe."
+- **References:** "What apps, sites, or products capture the feel?"
+- **Core action:** "What's the single most important thing a user does on this screen?"
+
+**2. Variants** (2-3, never 1, rarely 4+) — each variant takes a **different design stance**, not different pixel values:
+- **Density:** compact / airy / ultra-dense
+- **Emphasis:** content-first / action-first / tool-first
+- **Aesthetic:** editorial / utilitarian / playful
+- **Layout:** single-column / sidebar / split-pane
+
+Pick one axis and pull apart from it. Two variants that differ only in accent color are wasted effort.
+
+**3. Build as real HTML** — each variant is a single self-contained HTML file with inline CSS, realistic content, and at least one interactive state transition. Verify with `browser_vision`.
+
+**4. Head-to-head comparison** — present as a table, opinionate:
+
+```markdown
+| Dimension | Calm editorial | Utilitarian dense | Playful split |
+|-----------|----------------|-------------------|---------------|
+| Density   | Low            | High              | Medium        |
+| Feel      | Calm, trusted  | Sharp, tool-like  | Inviting      |
+
+**My take:** Utilitarian dense for power users, calm editorial for content-forward audiences.
+```
+
+**5. Variant README** — each variant gets a README with design stance, key choices, trade-offs, and best-for.
+
+### Frontier Mode
+
+If mockups already exist and user asks "what should I sketch next?":
+- **Consistency gaps** — winning variants from different sessions haven't been composed
+- **Unsketched screens** — referenced but never explored
+- **State coverage** — happy path done, but not empty/loading/error
+- **Responsive gaps** — validated at one viewport only
+
+### When NOT to use quick mockups
+
+- User wants a production component → use the full design workflow above
+- User wants a diagram → `excalidraw`, `architecture-diagram`
+- The design is already locked → just build it
+
 ## Portable Opening Prompt Pattern
 
 When adapting a Claude Design style request into CLI/API mode, use this mental translation:
