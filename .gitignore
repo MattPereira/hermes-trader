@@ -44,6 +44,7 @@ active_profile
 .install_method
 channel_directory.json
 errors.log
+interrupt_debug.log
 state-snapshots/
 kanban.db*
 kanban/
@@ -75,7 +76,6 @@ context_length_cache.yaml
 models_dev_cache.json
 ollama_cloud_models_cache.json
 provider_models_cache.json
-
 
 # obsidian
 obsidian-vault/.obsidian/

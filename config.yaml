@@ -232,7 +232,7 @@ display:
   tui_auto_resume_recent: false
   tui_agents_nudge: true
   bell_on_complete: false
-  show_reasoning: false
+  show_reasoning: true
   memory_notifications: 'on'
   streaming: false
   timestamps: false
@@ -244,7 +244,7 @@ display:
   file_mutation_verifier: true
   credits_notices: true
   turn_completion_explainer: true
-  show_cost: false
+  show_cost: true
   skin: default
   language: en
   tui_status_indicator: kaomoji
@@ -443,7 +443,7 @@ approvals:
   timeout: 60
   cron_mode: deny
   mcp_reload_confirm: true
-  destructive_slash_confirm: true
+  destructive_slash_confirm: false
 command_allowlist: []
 quick_commands: {}
 hooks: {}
@@ -515,7 +515,9 @@ sessions:
   min_interval_hours: 24
   write_json_snapshots: false
 onboarding:
-  seen: {}
+  seen:
+    tool_progress_prompt: true
+    busy_input_prompt: true
   profile_build: ask
 updates:
   pre_update_backup: false
@@ -543,7 +545,7 @@ secrets:
 paste_collapse_threshold: 5
 paste_collapse_threshold_fallback: 5
 paste_collapse_char_threshold: 2000
-_config_version: 26
+_config_version: 29
 session_reset:
   mode: none
 image_gen:
@@ -551,6 +553,13 @@ image_gen:
 video_gen:
   provider: fal
   use_gateway: true
+mcp_servers:
+  agentwikis:
+    command: npx
+    args:
+    - -y
+    - agentwikis-mcp
+    enabled: true
 
 # ── Fallback Model ────────────────────────────────────────────────────
 # Automatic provider failover when primary is unavailable.
