@@ -7,6 +7,8 @@
 !.env.template
 auth.json
 auth.lock
+/mcp-tokens/
+/images/
 
 # Runtime state / user data
 memories/
@@ -50,10 +52,15 @@ kanban.db*
 kanban/
 
 # Cron runtime locks
+cron/.jobs.lock
 cron/.tick.lock
+cron/ticker_heartbeat
+cron/ticker_last_success
+cron/output/
 
 # Skill runtime metadata / hub cache
 skills/.bundled_manifest
+skills/.curator_backups/
 skills/.curator_state
 skills/.hub/
 skills/.usage.json*
@@ -70,6 +77,9 @@ __pycache__/
 .venv
 
 # cache / snapshots
+.clean_shutdown
+.restart_pending.json
+.restart_notify.json
 .restart_last_processed.json
 context_length_cache.yaml
 .skills_prompt_snapshot.json
