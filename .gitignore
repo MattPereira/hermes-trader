@@ -28,6 +28,9 @@ checkpoints/
 sandboxes/
 backups/
 shared/
+state/
+desktop-build-stamp.json
+config.yaml.bak.*
 
 
 # Databases / process state
@@ -50,8 +53,10 @@ interrupt_debug.log
 state-snapshots/
 kanban.db*
 kanban/
+verification_evidence.db*
 
 # Cron runtime locks
+cron/jobs.json
 cron/.jobs.lock
 cron/.tick.lock
 cron/ticker_heartbeat
@@ -90,3 +95,4 @@ provider_models_cache.json
 # obsidian
 obsidian-vault/.obsidian/
 honcho.json
+pastes/paste_1_215436.txt
