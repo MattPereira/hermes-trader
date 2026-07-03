@@ -1,0 +1,30 @@
+# Source configuration for deterministic inbox collectors.
+# Schedules remain in Hermes cron jobs; mutable progress remains under state/.
+
+[youtube]
+output_dir = "vault/content/inbox/youtube"
+
+# Use canonical YouTube channel IDs (values beginning with "UC").
+[[youtube.channels]]
+id = "UCEOv-8wHvYC6mzsY2Gm5WcQ"
+name = "Empire"
+enabled = true
+
+[[youtube.channels]]
+id = "UCEAwYFRFUuekaEmKz4oiB_A"
+name = "1000x"
+enabled = true
+
+[twitter]
+output_dir = "vault/content/inbox/twitter"
+
+# [[twitter.accounts]]
+# handle = "example"
+# enabled = true
+
+[telegram]
+output_dir = "vault/content/inbox/telegram"
+
+# [[telegram.channels]]
+# username = "example_channel"
+# enabled = true

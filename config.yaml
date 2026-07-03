@@ -1,7 +1,7 @@
 model:
-  provider: nous
-  base_url: https://inference-api.nousresearch.com/v1
-  default: xiaomi/mimo-v2.5-pro
+  provider: openai-codex
+  base_url: https://chatgpt.com/backend-api/codex
+  default: gpt-5.5
 toolsets:
   - hermes-cli
 agent:
@@ -588,20 +588,17 @@ custom_providers:
     model: zai-org-glm-5-2
 platform_toolsets:
   cli:
-    - browser
     - clarify
     - code_execution
-    - computer_use
     - cronjob
     - delegation
     - file
-    - image_gen
+    - kanban
     - memory
     - session_search
     - skills
     - terminal
     - todo
-    - tts
     - vision
     - web
     - x_search

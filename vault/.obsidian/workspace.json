@@ -1,0 +1,234 @@
+{
+  "main": {
+    "id": "4c85044703944e05",
+    "type": "split",
+    "children": [
+      {
+        "id": "b6cc099a0fd7d3e7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "48255bd78de4cb9f",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      },
+      {
+        "id": "0726139abaee4286",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0f02244b1a53ed55",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "fdff464a07f0a5c4",
+    "type": "split",
+    "children": [
+      {
+        "id": "63279334615df952",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bc2f0dc2e28c898c",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "cb7f3ea7f1408a68",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "2de947572c1b75d0",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "6d74505c7f070359",
+    "type": "split",
+    "children": [
+      {
+        "id": "ad45f5c4585e27a3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c1c0cc95671787fc",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "8057cbda0be57075",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "3b462b664f8919d1",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "8d8dc36fbf118fdf",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "ff7ffd0eba721696",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "48255bd78de4cb9f",
+  "lastOpenFiles": [
+    "Welcome.md",
+    "content/inbox/substack",
+    "content/summaries/substack",
+    "content/summaries/youtube",
+    "content/summaries/twitter",
+    "content/summaries/telegram",
+    "content/archive/substack",
+    "content/archive/youtube",
+    "content/archive/twitter",
+    "content/archive/telegram",
+    "content/inbox/youtube/2026-07-03-1200-whats-circles-end-game-robinhood-launches-a-chain-venice-raises-65m.md",
+    "content/inbox/youtube/2026-06-29-1200-can-you-really-buy-a-house-without-selling-your-crypto-vishal-garg.md",
+    "content/inbox/youtube/2026-06-27-1130-state-of-the-market-the-prediction-market-wars-kraken-pursues-aave.md",
+    "content/inbox/youtube/2026-06-22-1300-optimism-co-founders-what-happened-to-the-l2s.md",
+    "content/inbox/youtube/2026-06-19-1200-anthropic-s-fable-banned-will-microstrategy-blow-up-structuring-a-portfolio-in-2026.md",
+    "content/inbox/youtube/2026-06-15-1200-the-bull-case-for-hyperliquid-ryan-watkins.md",
+    "content/inbox/youtube/2026-06-08-1300-cftc-chair-michael-selig-on-perps-prediction-markets-crypto-in-the-u-s.md",
+    "content/inbox/youtube/2026-06-05-1230-spacexs-1-75t-ipo-strategy-sells-bitcoin-cryptos-hard-reset.md",
+    "content/inbox/youtube/2026-06-01-1200-avichal-garg-on-investing-in-crypto-ai-and-ethereums-path-forward.md",
+    "content/inbox/youtube/2026-05-29-1200-whys-everyone-so-bearish-robinhood-s-ai-agent-and-sofi-s-stablecoin-launch.md",
+    "content/inbox/youtube",
+    "research/inbox/youtube/2026-07-03-1200-whats-circles-end-game-robinhood-launches-a-chain-venice-raises-65m.md",
+    "research/inbox/youtube/2026-06-29-1200-can-you-really-buy-a-house-without-selling-your-crypto-vishal-garg.md",
+    "research/inbox/youtube/2026-06-27-1130-state-of-the-market-the-prediction-market-wars-kraken-pursues-aave.md",
+    "research/inbox/youtube/2026-06-22-1300-optimism-co-founders-what-happened-to-the-l2s.md",
+    "research/inbox/youtube/2026-06-19-1200-anthropic-s-fable-banned-will-microstrategy-blow-up-structuring-a-portfolio-in-2026.md",
+    "research/inbox/youtube/2026-06-15-1200-the-bull-case-for-hyperliquid-ryan-watkins.md",
+    "research/inbox/youtube/2026-06-08-1300-cftc-chair-michael-selig-on-perps-prediction-markets-crypto-in-the-u-s.md",
+    "research/inbox/youtube/2026-06-05-1230-spacexs-1-75t-ipo-strategy-sells-bitcoin-cryptos-hard-reset.md",
+    "research/inbox/youtube/2026-06-01-1200-avichal-garg-on-investing-in-crypto-ai-and-ethereums-path-forward.md",
+    "research/inbox/youtube/2026-05-29-1200-whys-everyone-so-bearish-robinhood-s-ai-agent-and-sofi-s-stablecoin-launch.md",
+    "inbox/youtube/2026-06-22-1300-optimism-co-founders-what-happened-to-the-l2s.md",
+    "inbox/youtube/2026-06-19-1200-anthropic-s-fable-banned-will-microstrategy-blow-up-structuring-a-portfolio-in-2026.md",
+    "inbox/youtube/2026-06-15-1200-the-bull-case-for-hyperliquid-ryan-watkins.md",
+    "inbox/youtube/2026-06-08-1300-cftc-chair-michael-selig-on-perps-prediction-markets-crypto-in-the-u-s.md",
+    "inbox/youtube/2026-06-05-1230-spacexs-1-75t-ipo-strategy-sells-bitcoin-cryptos-hard-reset.md"
+  ]
+}
