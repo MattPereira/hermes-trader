@@ -4,33 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "b6cc099a0fd7d3e7",
+        "id": "c95db97d4438fbfa",
         "type": "tabs",
         "children": [
           {
-            "id": "48255bd78de4cb9f",
+            "id": "dec9774e355fc539",
             "type": "leaf",
             "state": {
               "type": "empty",
               "state": {},
               "icon": "lucide-file",
               "title": "New tab"
-            }
-          }
-        ]
-      },
-      {
-        "id": "0726139abaee4286",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "0f02244b1a53ed55",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
             }
           }
         ]
@@ -192,8 +176,28 @@
       "bases:Create new base": false
     }
   },
-  "active": "48255bd78de4cb9f",
+  "active": "dec9774e355fc539",
   "lastOpenFiles": [
+    "content/inbox/substack/2026-07-03-1601-best-trades-of-june-2026.md",
+    "content/inbox/substack/2026-07-03-0836-asia-3-jul-26.md",
+    "content/inbox/substack/2026-07-02-0640-pre-market-thoughts-2-jul-26.md",
+    "content/inbox/substack/2026-07-01-2050-post-market-thoughts-1-july-26.md",
+    "content/inbox/substack/2026-07-01-1546-market-thoughts-1-july-26.md",
+    "content/inbox/substack/2026-07-01-0752-pre-market-thoughts-and-a-review-of-june-1-jul-27.md",
+    "content/inbox/substack/2026-06-30-1526-a-quick-overview-of-shaz.md",
+    "content/inbox/substack/2026-06-30-1304-pre-market-thoughts-30-jun-26.md",
+    "content/inbox/substack/2026-06-29-0708-pre-market-thoughts-29-jun-26.md",
+    "content/inbox/substack/2026-06-28-1626-weekly-review-28-jun-26.md",
+    "content/inbox/substack/2026-06-26-0638-pre-market-thoughts-26-jun-26.md",
+    "content/inbox/substack/2026-06-18-2300-narratives-of-the-week-june-18.md",
+    "content/inbox/substack/2026-06-05-2252-may-2026-recap-narratives-best-performers-and-coins-to-watch.md",
+    "content/inbox/substack/2026-06-03-1249-best-trades-of-may-2026.md",
+    "content/inbox/substack/2026-05-19-1258-narratives-of-the-week-may-19.md",
+    "content/inbox/substack/2026-05-07-0017-april-2026-recap-narratives-best-performers-and-coins-to-watch.md",
+    "content/inbox/substack/2026-05-04-1411-best-trades-of-april-2026.md",
+    "content/inbox/substack/2026-04-30-0811-the-anatomy-of-scam-coin-pumps-a-compilation.md",
+    "content/inbox/substack/2026-04-18-0020-narratives-of-the-week-april-17.md",
+    "content/inbox/substack/2026-04-06-2253-march-2026-recap-narratives-best-performers-and-coins-to-watch.md",
     "Welcome.md",
     "content/inbox/substack",
     "content/summaries/substack",
@@ -209,26 +213,6 @@
     "content/inbox/youtube/2026-06-27-1130-state-of-the-market-the-prediction-market-wars-kraken-pursues-aave.md",
     "content/inbox/youtube/2026-06-22-1300-optimism-co-founders-what-happened-to-the-l2s.md",
     "content/inbox/youtube/2026-06-19-1200-anthropic-s-fable-banned-will-microstrategy-blow-up-structuring-a-portfolio-in-2026.md",
-    "content/inbox/youtube/2026-06-15-1200-the-bull-case-for-hyperliquid-ryan-watkins.md",
-    "content/inbox/youtube/2026-06-08-1300-cftc-chair-michael-selig-on-perps-prediction-markets-crypto-in-the-u-s.md",
-    "content/inbox/youtube/2026-06-05-1230-spacexs-1-75t-ipo-strategy-sells-bitcoin-cryptos-hard-reset.md",
-    "content/inbox/youtube/2026-06-01-1200-avichal-garg-on-investing-in-crypto-ai-and-ethereums-path-forward.md",
-    "content/inbox/youtube/2026-05-29-1200-whys-everyone-so-bearish-robinhood-s-ai-agent-and-sofi-s-stablecoin-launch.md",
-    "content/inbox/youtube",
-    "research/inbox/youtube/2026-07-03-1200-whats-circles-end-game-robinhood-launches-a-chain-venice-raises-65m.md",
-    "research/inbox/youtube/2026-06-29-1200-can-you-really-buy-a-house-without-selling-your-crypto-vishal-garg.md",
-    "research/inbox/youtube/2026-06-27-1130-state-of-the-market-the-prediction-market-wars-kraken-pursues-aave.md",
-    "research/inbox/youtube/2026-06-22-1300-optimism-co-founders-what-happened-to-the-l2s.md",
-    "research/inbox/youtube/2026-06-19-1200-anthropic-s-fable-banned-will-microstrategy-blow-up-structuring-a-portfolio-in-2026.md",
-    "research/inbox/youtube/2026-06-15-1200-the-bull-case-for-hyperliquid-ryan-watkins.md",
-    "research/inbox/youtube/2026-06-08-1300-cftc-chair-michael-selig-on-perps-prediction-markets-crypto-in-the-u-s.md",
-    "research/inbox/youtube/2026-06-05-1230-spacexs-1-75t-ipo-strategy-sells-bitcoin-cryptos-hard-reset.md",
-    "research/inbox/youtube/2026-06-01-1200-avichal-garg-on-investing-in-crypto-ai-and-ethereums-path-forward.md",
-    "research/inbox/youtube/2026-05-29-1200-whys-everyone-so-bearish-robinhood-s-ai-agent-and-sofi-s-stablecoin-launch.md",
-    "inbox/youtube/2026-06-22-1300-optimism-co-founders-what-happened-to-the-l2s.md",
-    "inbox/youtube/2026-06-19-1200-anthropic-s-fable-banned-will-microstrategy-blow-up-structuring-a-portfolio-in-2026.md",
-    "inbox/youtube/2026-06-15-1200-the-bull-case-for-hyperliquid-ryan-watkins.md",
-    "inbox/youtube/2026-06-08-1300-cftc-chair-michael-selig-on-perps-prediction-markets-crypto-in-the-u-s.md",
-    "inbox/youtube/2026-06-05-1230-spacexs-1-75t-ipo-strategy-sells-bitcoin-cryptos-hard-reset.md"
+    "content/inbox/youtube"
   ]
 }

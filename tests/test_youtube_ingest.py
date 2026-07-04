@@ -110,7 +110,7 @@ class YouTubeIngestTests(unittest.TestCase):
 
     def test_channel_loader_ignores_other_ingestion_sources(self):
         with tempfile.TemporaryDirectory() as temporary:
-            config = Path(temporary) / "ingestion.toml"
+            config = Path(temporary) / "config.toml"
             config.write_text(
                 '[youtube]\n'
                 '[[youtube.channels]]\nid="UC123456789"\nname="Example"\n'

@@ -29,7 +29,7 @@ from typing import Any, Iterator
 
 
 PROFILE_DIR = Path(__file__).resolve().parent.parent
-DEFAULT_CONFIG = PROFILE_DIR / "ingestion.toml"
+DEFAULT_CONFIG = PROFILE_DIR / "config.toml"
 DEFAULT_STATE = PROFILE_DIR / "state/youtube-ingest.json"
 ATOM = "{http://www.w3.org/2005/Atom}"
 YT = "{http://www.youtube.com/xml/schemas/2015}"

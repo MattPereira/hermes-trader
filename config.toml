@@ -15,6 +15,22 @@ id = "UCEAwYFRFUuekaEmKz4oiB_A"
 name = "1000x"
 enabled = true
 
+[substack]
+output_dir = "vault/content/inbox/substack"
+initial_backfill_limit = 5
+
+[[substack.publications]]
+handle = "cryptonarratives"
+enabled = true
+
+[[substack.publications]]
+handle = "degentradingdaily"
+enabled = true
+
+[[substack.publications]]
+handle = "cryptohayes"
+enabled = true
+
 [twitter]
 output_dir = "vault/content/inbox/twitter"
 
