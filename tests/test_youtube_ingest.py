@@ -26,10 +26,14 @@ class YouTubeIngestTests(unittest.TestCase):
             published_at="2026-07-03T15:04:00Z",
         )
 
-    def test_filename_uses_utc_publication_time_and_slug(self):
+    def test_filename_uses_source_channel_and_title(self):
         self.assertEqual(
             ingest.filename_for(self.video()),
-            "2026-07-03-1504-an-example-video.md",
+            "youtube-example-channel-an-example-video.md",
+        )
+        self.assertEqual(
+            ingest.dated_dir(Path("inbox"), self.video().published_at),
+            Path("inbox/2026/july/03"),
         )
 
     def test_render_note_has_metadata_and_timestamped_transcript(self):
@@ -40,6 +44,7 @@ class YouTubeIngestTests(unittest.TestCase):
             "2026-07-03T16:00:00Z",
         )
         self.assertIn('video_id: "abcdefghijk"', note)
+        self.assertIn('source_type: "youtube"', note)
         self.assertIn('published_at: "2026-07-03T15:04:00Z"', note)
         self.assertIn("1:05 Hello", note)
 
@@ -112,6 +117,7 @@ class YouTubeIngestTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             config = Path(temporary) / "config.toml"
             config.write_text(
+                '[inbox]\noutput_dir="inbox"\ntimezone="America/Los_Angeles"\n'
                 '[youtube]\n'
                 '[[youtube.channels]]\nid="UC123456789"\nname="Example"\n'
                 '[twitter]\n'
@@ -125,7 +131,7 @@ class YouTubeIngestTests(unittest.TestCase):
             )
             self.assertEqual(
                 ingest.configured_output_dir(config),
-                config.parent / "vault/content/inbox/youtube",
+                config.parent / "inbox",
             )
 
     def test_success_writes_note_and_state(self):
@@ -136,7 +142,7 @@ class YouTubeIngestTests(unittest.TestCase):
             with patch.object(ingest, "fetch_transcript", return_value=transcript):
                 counts = ingest.collect([self.video()], state, root / "out", root / "state.json", False)
             self.assertEqual(counts["created"], 1)
-            notes = list((root / "out").glob("*.md"))
+            notes = list((root / "out").rglob("*.md"))
             self.assertEqual(len(notes), 1)
             persisted = json.loads((root / "state.json").read_text())
             self.assertEqual(persisted["videos"]["abcdefghijk"]["status"], "ingested")

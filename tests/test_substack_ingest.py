@@ -35,10 +35,14 @@ class SubstackIngestTests(unittest.TestCase):
             "degentradingdaily",
         )
 
-    def test_filename_uses_utc_publication_time_and_slug(self):
+    def test_filename_uses_source_publication_and_title(self):
         self.assertEqual(
             ingest.filename_for(self.post()),
-            "2026-07-03-1504-an-example-post.md",
+            "substack-example-an-example-post.md",
+        )
+        self.assertEqual(
+            ingest.dated_dir(Path("inbox"), self.post().published_at),
+            Path("inbox/2026/july/03"),
         )
 
     def test_resolve_publication_reads_primary_publication(self):
@@ -75,6 +79,7 @@ class SubstackIngestTests(unittest.TestCase):
     def test_render_note_has_metadata_and_markdown_body(self):
         note = ingest.render_note(self.post(), "2026-07-03T16:00:00Z")
         self.assertIn('post_id: "example-post"', note)
+        self.assertIn('source_type: "substack"', note)
         self.assertIn('publication_handle: "example"', note)
         self.assertIn("Hello **world**.", note)
 
@@ -106,7 +111,8 @@ class SubstackIngestTests(unittest.TestCase):
             root = Path(temporary)
             config = root / "config.toml"
             config.write_text(
-                '[substack]\noutput_dir="out"\ninitial_backfill_limit=5\n'
+                '[inbox]\noutput_dir="out"\ntimezone="America/Los_Angeles"\n'
+                '[substack]\ninitial_backfill_limit=5\n'
                 '[[substack.publications]]\nhandle="example"\n'
             )
             posts = [self.post(f"post-{index}", f"Post {index}") for index in range(12)]
@@ -129,7 +135,7 @@ class SubstackIngestTests(unittest.TestCase):
             state = {"version": 1, "publications": {}, "posts": {}}
             counts = ingest.collect([self.post()], state, root / "out", root / "state.json", False)
             self.assertEqual(counts["created"], 1)
-            self.assertEqual(len(list((root / "out").glob("*.md"))), 1)
+            self.assertEqual(len(list((root / "out").rglob("*.md"))), 1)
             persisted = json.loads((root / "state.json").read_text())
             self.assertEqual(persisted["posts"]["example-post"]["status"], "ingested")
 

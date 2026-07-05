@@ -1,8 +1,11 @@
 # Source configuration for deterministic inbox collectors.
 # Schedules remain in Hermes cron jobs; mutable progress remains under state/.
 
+[inbox]
+output_dir = "vault/content/inbox"
+timezone = "America/Los_Angeles"
+
 [youtube]
-output_dir = "vault/content/inbox/youtube"
 
 # Use canonical YouTube channel IDs (values beginning with "UC").
 [[youtube.channels]]
@@ -16,7 +19,6 @@ name = "1000x"
 enabled = true
 
 [substack]
-output_dir = "vault/content/inbox/substack"
 initial_backfill_limit = 5
 
 [[substack.publications]]
@@ -31,16 +33,11 @@ enabled = true
 handle = "cryptohayes"
 enabled = true
 
-[twitter]
-output_dir = "vault/content/inbox/twitter"
-
-# [[twitter.accounts]]
-# handle = "example"
-# enabled = true
-
 [telegram]
-output_dir = "vault/content/inbox/telegram"
+session_file = "sessions/telegram-ingest"
+download_media = true
 
-# [[telegram.channels]]
-# username = "example_channel"
-# enabled = true
+[[telegram.channels]]
+username = "cryptonarratives1"
+name = "Crypto Narratives"
+enabled = true

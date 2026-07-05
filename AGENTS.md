@@ -18,4 +18,5 @@ For questions about how hermes agents work, consult the current docs:
 
 ## Git
 
-- Always scan config.yaml for API keys before committing any changes. Do not commit if any api key is present
+- Before committing, run `python3 -B .agents/scripts/check-config-api-keys.py`.
+- Do not commit if the validator exits nonzero.

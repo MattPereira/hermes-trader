@@ -26,6 +26,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterator
+from zoneinfo import ZoneInfo
 
 
 PROFILE_DIR = Path(__file__).resolve().parent.parent
@@ -35,6 +36,11 @@ ATOM = "{http://www.w3.org/2005/Atom}"
 YT = "{http://www.youtube.com/xml/schemas/2015}"
 VIDEO_ID_RE = re.compile(r"(?:v=|youtu\.be/|shorts/|embed/|live/)([A-Za-z0-9_-]{11})")
 INITIAL_BACKFILL_LIMIT = 10
+DEFAULT_TIMEZONE = ZoneInfo("America/Los_Angeles")
+MONTH_NAMES = (
+    "january", "february", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december",
+)
 
 
 @dataclass(frozen=True)
@@ -66,8 +72,12 @@ def slugify(title: str, limit: int = 100) -> str:
 
 
 def filename_for(video: Video) -> str:
-    published = parse_datetime(video.published_at)
-    return f"{published:%Y-%m-%d-%H%M}-{slugify(video.title)}.md"
+    return f"youtube-{slugify(video.channel_name, 60)}-{slugify(video.title)}.md"
+
+
+def dated_dir(output_dir: Path, published_at: str, timezone: ZoneInfo = DEFAULT_TIMEZONE) -> Path:
+    local = parse_datetime(published_at).astimezone(timezone)
+    return output_dir / f"{local:%Y}" / MONTH_NAMES[local.month - 1] / f"{local:%d}"
 
 
 def extract_video_id(value: str) -> str:
@@ -100,11 +110,17 @@ def load_channels(path: Path) -> list[dict[str, str]]:
 def configured_output_dir(path: Path) -> Path:
     with path.open("rb") as handle:
         data = tomllib.load(handle)
-    youtube = data.get("youtube", {})
-    if not isinstance(youtube, dict):
-        raise ValueError("ingestion config section 'youtube' must be a table")
-    configured = Path(str(youtube.get("output_dir", "vault/content/inbox/youtube")))
+    inbox = data.get("inbox", {})
+    if not isinstance(inbox, dict):
+        raise ValueError("ingestion config section 'inbox' must be a table")
+    configured = Path(str(inbox.get("output_dir", "vault/content/inbox")))
     return configured if configured.is_absolute() else path.parent / configured
+
+
+def configured_timezone(path: Path) -> ZoneInfo:
+    with path.open("rb") as handle:
+        data = tomllib.load(handle)
+    return ZoneInfo(str(data.get("inbox", {}).get("timezone", "America/Los_Angeles")))
 
 
 def fetch_channel_feed(channel_id: str, channel_name: str) -> list[Video]:
@@ -195,6 +211,9 @@ def render_note(video: Video, segments: list[dict[str, Any]], language: str, fet
     return (
         "---\n"
         f"title: {yaml_string(video.title)}\n"
+        "source_type: \"youtube\"\n"
+        f"source_name: {yaml_string(video.channel_name)}\n"
+        f"date: {yaml_string(parse_datetime(video.published_at).astimezone(DEFAULT_TIMEZONE).date().isoformat())}\n"
         f"video_id: {yaml_string(video.video_id)}\n"
         f"channel_id: {yaml_string(video.channel_id)}\n"
         f"channel_name: {yaml_string(video.channel_name)}\n"
@@ -241,7 +260,7 @@ def scan_existing_notes(output_dir: Path) -> set[str]:
     if not output_dir.exists():
         return found
     pattern = re.compile(r'^video_id:\s*["\']?([A-Za-z0-9_-]{11})["\']?\s*$', re.MULTILINE)
-    for note in output_dir.glob("*.md"):
+    for note in output_dir.rglob("*.md"):
         with contextlib.suppress(OSError, UnicodeDecodeError):
             match = pattern.search(note.read_text(encoding="utf-8")[:5000])
             if match:
@@ -249,8 +268,8 @@ def scan_existing_notes(output_dir: Path) -> set[str]:
     return found
 
 
-def output_path(output_dir: Path, video: Video) -> Path:
-    preferred = output_dir / filename_for(video)
+def output_path(output_dir: Path, video: Video, timezone: ZoneInfo = DEFAULT_TIMEZONE) -> Path:
+    preferred = dated_dir(output_dir, video.published_at, timezone) / filename_for(video)
     if not preferred.exists():
         return preferred
     text = preferred.read_text(encoding="utf-8", errors="ignore")[:5000]
@@ -281,7 +300,8 @@ def state_lock(state_path: Path) -> Iterator[None]:
 
 
 def collect(
-    videos: list[Video], state: dict[str, Any], output_dir: Path, state_path: Path, dry_run: bool
+    videos: list[Video], state: dict[str, Any], output_dir: Path, state_path: Path, dry_run: bool,
+    timezone: ZoneInfo = DEFAULT_TIMEZONE,
 ) -> dict[str, int]:
     counts = {"created": 0, "seen": 0, "pending": 0, "failed": 0}
     existing = scan_existing_notes(output_dir)
@@ -297,7 +317,7 @@ def collect(
         try:
             segments, language = fetch_transcript(video.video_id)
             note = render_note(video, segments, language, utc_now().isoformat().replace("+00:00", "Z"))
-            destination = output_path(output_dir, video)
+            destination = output_path(output_dir, video, timezone)
             if not dry_run:
                 atomic_write(destination, note)
                 state["videos"][video.video_id] = video_record(video, "ingested", path=str(destination))
@@ -375,13 +395,14 @@ def main(argv: list[str] | None = None) -> int:
         with state_lock(args.state_file):
             state = load_state(args.state_file)
             output_dir = args.output_dir or configured_output_dir(config_path)
+            timezone = configured_timezone(config_path)
             if args.video:
                 videos = [fetch_manual_metadata(args.video)]
             else:
                 videos = channel_candidates(config_path, state, args.dry_run)
                 if not args.dry_run:
                     atomic_write(args.state_file, json.dumps(state, ensure_ascii=False, indent=2) + "\n")
-            counts = collect(videos, state, output_dir, args.state_file, args.dry_run)
+            counts = collect(videos, state, output_dir, args.state_file, args.dry_run, timezone)
     except Exception as error:
         print(f"YouTube ingestion failed: {type(error).__name__}: {error}", file=sys.stderr)
         return 1

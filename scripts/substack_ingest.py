@@ -30,6 +30,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterator
+from zoneinfo import ZoneInfo
 
 
 PROFILE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,11 @@ DEFAULT_STATE = PROFILE_DIR / "state/substack-ingest.json"
 CONTENT = "{http://purl.org/rss/1.0/modules/content/}"
 DC = "{http://purl.org/dc/elements/1.1/}"
 USER_AGENT = "hermes-substack-collector/1.0"
+DEFAULT_TIMEZONE = ZoneInfo("America/Los_Angeles")
+MONTH_NAMES = (
+    "january", "february", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december",
+)
 
 
 @dataclass(frozen=True)
@@ -96,8 +102,12 @@ def slugify(title: str, limit: int = 100) -> str:
 
 
 def filename_for(post: Post) -> str:
-    published = parse_datetime(post.published_at)
-    return f"{published:%Y-%m-%d-%H%M}-{slugify(post.title)}.md"
+    return f"substack-{slugify(post.publication_handle, 60)}-{slugify(post.title)}.md"
+
+
+def dated_dir(output_dir: Path, published_at: str, timezone: ZoneInfo = DEFAULT_TIMEZONE) -> Path:
+    local = parse_datetime(published_at).astimezone(timezone)
+    return output_dir / f"{local:%Y}" / MONTH_NAMES[local.month - 1] / f"{local:%d}"
 
 
 def fetch_url(url: str) -> tuple[bytes, str]:
@@ -109,14 +119,17 @@ def fetch_url(url: str) -> tuple[bytes, str]:
 def load_settings(path: Path) -> tuple[list[str], Path, int]:
     with path.open("rb") as handle:
         data = tomllib.load(handle)
+    inbox = data.get("inbox", {})
     substack = data.get("substack", {})
+    if not isinstance(inbox, dict):
+        raise ValueError("ingestion config section 'inbox' must be a table")
     if not isinstance(substack, dict):
         raise ValueError("ingestion config section 'substack' must be a table")
     handles: list[str] = []
     for item in substack.get("publications", []):
         if item.get("enabled", True):
             handles.append(normalize_handle(str(item.get("handle", ""))))
-    configured = Path(str(substack.get("output_dir", "vault/content/inbox/substack")))
+    configured = Path(str(inbox.get("output_dir", "vault/content/inbox")))
     output_dir = configured if configured.is_absolute() else path.parent / configured
     limit = int(substack.get("initial_backfill_limit", 5))
     if limit < 1:
@@ -250,6 +263,9 @@ def render_note(post: Post, fetched_at: str) -> str:
     return (
         "---\n"
         f"title: {yaml_string(post.title)}\n"
+        "source_type: \"substack\"\n"
+        f"source_name: {yaml_string(post.publication_handle)}\n"
+        f"date: {yaml_string(parse_datetime(post.published_at).astimezone(DEFAULT_TIMEZONE).date().isoformat())}\n"
         f"post_id: {yaml_string(post.post_id)}\n"
         f"author: {yaml_string(post.author)}\n"
         f"publication_handle: {yaml_string(post.publication_handle)}\n"
@@ -295,7 +311,7 @@ def scan_existing_notes(output_dir: Path) -> set[str]:
     if not output_dir.exists():
         return found
     pattern = re.compile(r'^post_id:\s*["\']?([^"\'\n]+)["\']?\s*$', re.MULTILINE)
-    for note in output_dir.glob("*.md"):
+    for note in output_dir.rglob("*.md"):
         with contextlib.suppress(OSError, UnicodeDecodeError):
             match = pattern.search(note.read_text(encoding="utf-8")[:5000])
             if match:
@@ -304,7 +320,7 @@ def scan_existing_notes(output_dir: Path) -> set[str]:
 
 
 def output_path(output_dir: Path, post: Post) -> Path:
-    preferred = output_dir / filename_for(post)
+    preferred = dated_dir(output_dir, post.published_at) / filename_for(post)
     if not preferred.exists():
         return preferred
     text = preferred.read_text(encoding="utf-8", errors="ignore")[:5000]
